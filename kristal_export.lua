@@ -1,7 +1,7 @@
 local function export(sprite, directory)
 	for _, tag in ipairs(sprite.tags) do
 		for j=tag.fromFrame.frameNumber,tag.toFrame.frameNumber do
-			local file_name = tag.name .. "_" .. (j - tag.fromFrame.frameNumber) .. ".png"
+			local file_name = tag.name .. "_" .. ((j - tag.fromFrame.frameNumber) + 1) .. ".png"
 			local tempsprite = Sprite(sprite)
 			local frame_n = j
 			tempsprite.filename = file_name
