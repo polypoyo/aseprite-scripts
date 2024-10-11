@@ -28,6 +28,17 @@ local function dirname(str)
     return str:match("(.*[/\\])")
 end
 
+
+if #app.sprite.tags == 0 then
+	local dlg = Dialog{ title = "Error!" }
+	dlg:label{text = "Need at least one tag in order to export!"}
+	dlg:button{
+			text="OK", onclick=function()
+				dlg:close()
+			end, focus = true}
+	dlg:show()
+	return
+end
 local dlg = Dialog()
 dlg:entry{ id="target_dir",
 	label="Target Directory",
@@ -48,4 +59,3 @@ dlg:button {
 	end
 }
 dlg:show{ wait=false }
-
