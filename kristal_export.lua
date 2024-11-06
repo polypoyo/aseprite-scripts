@@ -1,25 +1,27 @@
+local function exportFrame(sprite, frame_n, output)
+	local tempsprite = Sprite(sprite)
+	repeat
+		if frame_n == 1 then
+			tempsprite:deleteFrame(2)
+		else
+			tempsprite:deleteFrame(1)
+			frame_n = frame_n - 1
+		end 
+	until #tempsprite.frames == 1
+	-- sanity check (trust me it's more annoying with out this)
+	if #tempsprite.frames ~= 1 then
+		tempsprite:close()
+		error("More than one frame left somehow?")
+	end
+	tempsprite:saveCopyAs(output)
+	tempsprite:close()
+end
+
 local function export(sprite, directory)
 	for _, tag in ipairs(sprite.tags) do
 		for j=tag.fromFrame.frameNumber,tag.toFrame.frameNumber do
 			local file_name = tag.name .. "_" .. ((j - tag.fromFrame.frameNumber) + 1) .. ".png"
-			local tempsprite = Sprite(sprite)
-			local frame_n = j
-			tempsprite.filename = file_name
-			repeat
-				if frame_n == 1 then
-					tempsprite:deleteFrame(2)
-				else
-					tempsprite:deleteFrame(1)
-					frame_n = frame_n - 1
-				end 
-			until #tempsprite.frames == 1
-			-- sanity check (trust me it's more annoying with out this)
-			if #tempsprite.frames ~= 1 then
-				tempsprite:close()
-				error("More than one frame left somehow?")
-			end
-			tempsprite:saveCopyAs(directory .. file_name)
-			tempsprite:close()
+			exportFrame(sprite, j, directory .. file_name)
 		end
 	end
 end
