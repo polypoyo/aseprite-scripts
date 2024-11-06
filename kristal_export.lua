@@ -19,9 +19,20 @@ end
 
 local function export(sprite, directory)
 	for _, tag in ipairs(sprite.tags) do
-		for j=tag.fromFrame.frameNumber,tag.toFrame.frameNumber do
-			local file_name = tag.name .. "_" .. ((j - tag.fromFrame.frameNumber) + 1) .. ".png"
-			exportFrame(sprite, j, directory .. file_name)
+		local count = 1
+		if tag.aniDir ~= AniDir.REVERSE then
+			for j=tag.fromFrame.frameNumber,tag.toFrame.frameNumber do
+				local file_name = tag.name .. "_" .. count .. ".png"
+				count = count + 1
+				exportFrame(sprite, j, directory .. file_name)
+			end
+		end
+		if tag.aniDir == AniDir.PING_PONG or tag.aniDir == AniDir.PING_PONG_REVERSE or tag.aniDir == AniDir.REVERSE then
+			for j=tag.toFrame.frameNumber,tag.fromFrame.frameNumber,-1 do
+				local file_name = tag.name .. "_" .. count .. ".png"
+				count = count + 1
+				exportFrame(sprite, j, directory .. file_name)
+			end
 		end
 	end
 end
